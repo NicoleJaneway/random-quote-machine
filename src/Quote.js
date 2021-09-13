@@ -2,33 +2,47 @@ import React, {useState, useEffect} from "react";
 import useFetch from "./useFetch";
 
 export default function Quote() {
-    const {get} = useFetch("https://stoicquotesapi.com/v1/api/quotes/random")
+    const { get, loading } = useFetch("https://stoicquotesapi.com/v1/api/quotes/")
 
     const [quoteObj, setQuoteObj] = useState({})
-    const [quote, setQuote] = useState("")
-    const [author, setAuthor] = useState("")
+    const [quote, setQuote] = useState()
+    const [quoteAuthor, setQuoteAuthor] = useState()
     const [reset, setReset] = useState(1)
 
     useEffect( () => {
-        get()
-        .then(data => {console.log(response) 
-        setQuoteObj(response)
+        getQuote()
+    }, []); //this is not working - not sure why.
 
-        const {body, author, ...rest} = quoteObj;
+    useEffect( () => {
+        getQuote()
+    }, [reset]);
 
-        setQuote(body);
-        setAuthor(author);
+    function getQuote(){
+        get("random")
+        .then(data => {
+            console.log(data) 
+            setQuoteObj(data)
+
+            const {body, author, ...rest} = quoteObj;
+
+            setQuote(body);
+            setQuoteAuthor(author);
         })
         .catch(error => console.log(error))
-    }, [reset])
+    }
 
-    function handleButtonClick(){
+    function handleResetClick(){
         setReset(Math.random())
+    }
+
+    function handleTweetClick() {
+        window.open("https://twitter.com/intent/tweet", "_blank");
     }
 
     return <>
         <p id="text">{quote}</p>
-        <p id="author">{author}</p>
-        <button id="new-quote" onClick={()=>handleButtonClick}>New quote</button>
+        <p id="author">{quoteAuthor}</p>
+        <button id="tweet-quote" className="btn" onClick={handleTweetClick}>Tweet</button>
+        <button id="new-quote" className="btn" onClick={handleResetClick}>New quote</button>
     </>
 }

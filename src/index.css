@@ -11,3 +11,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#quote-box {
+  display: block;
+  margin: auto;
+  width: 50%;
+  border: 3px solid grey;
+  position: relative;
+  top: 33vh;
+  text-align: center;
+}
+
+.btn {
+  margin: 5px 20px 20px 20px;
+}
