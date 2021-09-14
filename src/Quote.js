@@ -15,16 +15,8 @@ export default function Quote() {
     }, [reset]);
 
     useEffect( () => {
-        console.log("Author after author updates: "+quoteAuthor)
-        console.log("Quote after author updates: "+quote)
-
-        if (quote !== undefined) {
-            
-            const text = '"'+quote.replace(/ /g, "%20")+'"%20-'+quoteAuthor.replace(/ /g, "%20")
-            setTweetString(text)
-            console.log("tweetString: " + tweetString)
-        }
-    }, [quoteAuthor])
+        console.log("Here's Jad's suggestion: " +tweetString)
+    }, [tweetString])
 
     function getQuote(){
         get("random")
@@ -34,16 +26,15 @@ export default function Quote() {
 
             setQuote(body);
             setQuoteAuthor(author);
+            setTweetString('"'+body.replace(/ /g, '%20')+'"%20-'+author.replace(/ /g, '%20'))
 
-            console.log("body: " + body)
-            console.log("auth: "+ author)
         })
         .catch(error => console.log(error))
     }
 
     function handleTweetClick() {
         console.log("tweetString should be updated HERE: "+tweetString)
-        window.open("https://twitter.com/intent/tweet?text="+{tweetString}+"&via=Nicole_Janeway", "_blank");
+        window.open(`https://twitter.com/intent/tweet?text=${tweetString}&via=Nicole_Janeway`, "_blank");
     }
 
     function handleResetClick(){
